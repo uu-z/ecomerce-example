@@ -1,0 +1,49 @@
+version: "2"
+services:
+  server:
+    image: "node:alpine"
+    restart: always
+    working_dir: /home/node/app
+    command: npm run start
+    environment:
+      - HOST=localhost
+      - PORT=8001
+      - ES_HOST=es:9200
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - MONGO_URL=mongo:27017
+      - MONGO_DATABASE=test
+      - NODE_ENV=prod
+    volumes:
+      - ./:/home/node/app
+    networks:
+      - proxy
+    ports:
+      - 8001:8001
+  # redis:
+  #   image: redis:alpine
+  #   restart: always
+  #   networks:
+  #     - proxy
+  #   ports:
+  #     - 6379:6379
+  #   volumes:
+  #     - redis-data:/data
+  mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=test
+    ports:
+      - "27017:27017"
+    networks:
+      - proxy
+    volumes:
+      - "mongo-data:/data/db"
+    restart: always
+volumes:
+  redis-data:
+  mongo-data:
+
+networks:
+  proxy:
+    external: true

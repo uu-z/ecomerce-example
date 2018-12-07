@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "graphql-compose": "^5.3.4",
+    "koma": "^0.1.5-rc2"
+  }
+}
