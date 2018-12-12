@@ -14,7 +14,7 @@ module.exports = {
         address: { type: "string" }
       },
       options: {
-        timestamp: true
+        timestamps: true
       }
     }
   }

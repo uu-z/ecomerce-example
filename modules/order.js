@@ -2,10 +2,126 @@ const { mongoose, MongooseUtils } = require("koma/plugins/mongoose");
 const { models } = MongooseUtils;
 const { SchemaTypes } = mongoose;
 const _ = require("lodash");
+const dayjs = require("dayjs");
 
 module.exports = {
   gql: {
     Query: {
+      OrderPaymentAnalysis: {
+        type: `type OrderPaymentAnalysis {year: [JSON], month: [JSON], day: [JSON]}`,
+        args: {
+          date: "Date"
+        },
+        resolve: async ({ args }) => {
+          const d = dayjs(args.date);
+          let day = await models("Order").aggregate([
+            {
+              $match: {
+                createdAt: { $gte: d.startOf("month").toDate() }
+              }
+            },
+            {
+              $group: {
+                _id: {
+                  month: { $month: "$createdAt" },
+                  day: { $dayOfMonth: "$createdAt" },
+                  year: { $year: "$createdAt" },
+                  saleType: "$saleType"
+                },
+                paymentAmount: { $sum: "$paymentAmount" },
+                debtAmount: { $sum: "$debtAmount" }
+              }
+            }
+          ]);
+          let month = await models("Order").aggregate([
+            {
+              $match: {
+                createdAt: { $gte: d.startOf("year").toDate() }
+              }
+            },
+            {
+              $group: {
+                _id: {
+                  month: { $month: "$createdAt" },
+                  year: { $year: "$createdAt" },
+                  saleType: "$saleType"
+                },
+                paymentAmount: { $sum: "$paymentAmount" },
+                debtAmount: { $sum: "$debtAmount" }
+              }
+            }
+          ]);
+          let year = await models("Order").aggregate([
+            {
+              $group: {
+                _id: {
+                  year: { $year: "$createdAt" },
+                  saleType: "$saleType"
+                },
+                paymentAmount: { $sum: "$paymentAmount" },
+                debtAmount: { $sum: "$debtAmount" }
+              }
+            }
+          ]);
+          let map = (v, k) => {
+            let val = { _id: k };
+            _.each(v, (v1, k1) => {
+              val[`${v1._id.saleType}PaymentAmount`] = v1.paymentAmount;
+              val[`${v1._id.saleType}debtAmount`] = v1.debtAmount;
+            });
+            val["realSalePaymentAmount"] =
+              _.get(val, "SalePaymentAmount", 0) - _.get(val, "ReturnedSalePaymentAmount", 0);
+            return val;
+          };
+
+          day = _.chain(day)
+            .groupBy(o => `${o._id.day}`)
+            .map(map)
+            .value();
+          month = _.chain(month)
+            .groupBy(o => `${o._id.month}`)
+            .map(map)
+            .value();
+          year = _.chain(year)
+            .groupBy(o => `${o._id.year}`)
+            .map(map)
+            .value();
+
+          return { day, month, year };
+        }
+      },
+      UserPaymentByIds: {
+        type: `type UserPaymentByIds {items: [JSON]}`,
+        args: {
+          ids: "JSON!"
+        },
+        resolve: async ({ args }) => {
+          const result = await models("Order").find({ targetUser: { $in: args.ids } });
+
+          const data = _.chain(result)
+            .groupBy("targetUser")
+            .map((v, k) => {
+              let val = {
+                totalAmount: 0,
+                paymentAmount: 0,
+                debtAmount: 0
+              };
+
+              _.each(v, (v1, k1) => {
+                _.each(val, (v2, k2) => {
+                  val[k2] += v1[k2];
+                });
+              });
+
+              return {
+                _id: k,
+                ...val
+              };
+            })
+            .value();
+          return { items: data };
+        }
+      },
       ProductStorageByNames: {
         type: `type ProductStorageByNames {items: [JSON]}`,
         args: {
@@ -44,7 +160,7 @@ module.exports = {
                 total: val.in + val.returnOut - val.out - val.returnIn,
                 totalAmount: -val.inAmount - val.returnOutAmount + val.outAmount + val.returnInAmount
               });
-              val.totalAvg = Math.floor(val.totalAmount / val.total);
+              val.totalAvg = Math.floor(val.totalAmount / (val.in - val.returnIn));
               return val;
             })
             .value();
@@ -79,7 +195,7 @@ module.exports = {
         createdAt: { type: "date", index: true }
       },
       options: {
-        timestamp: true
+        timestamps: true
       }
     }
   }

@@ -3,36 +3,37 @@ const { MongooseUtils } = require("koma/plugins/mongoose");
 const { models } = MongooseUtils;
 const { signJWT } = require("koma/plugins/jwt");
 
-
 module.exports = {
   name: "User",
-  gql:{
-    Mutation:{
-      Login:{
+  gql: {
+    Mutation: {
+      Login: {
         type: `type Login {account: Account!, jwt: String!}`,
-        args: {identifier: "String!", password: "String!"},
-        resolve: async({args}) => {
-          const {identifier, password} = args
-          const account = await models("Account").findOne({$or:[{username: identifier}]}).select("+password")
-          if(!account) throw new Error("用户不存在")
-          const validPassword = await account.verifyPassword(password)
-          if(validPassword){
-            delete account.password
-            return {account, jwt: signJWT({_id: account._id, role: account.role})}
+        args: { identifier: "String!", password: "String!" },
+        resolve: async ({ args }) => {
+          const { identifier, password } = args;
+          const account = await models("Account")
+            .findOne({ $or: [{ username: identifier }] })
+            .select("+password");
+          if (!account) throw new Error("用户不存在");
+          const validPassword = await account.verifyPassword(password);
+          if (validPassword) {
+            delete account.password;
+            return { account, jwt: signJWT({ _id: account._id, role: account.role }) };
           } else {
-            throw new Error("用户名或密码错误")
+            throw new Error("用户名或密码错误");
           }
         }
       },
-      SignUp:{
+      SignUp: {
         type: `type User {username: String!}`,
-        args:{
+        args: {
           username: "String!",
           password: "String!"
         },
-        resolve: async({args}) => {
-          const user = await models("Account").create(args)
-          return user
+        resolve: async ({ args }) => {
+          const user = await models("Account").create(args);
+          return user;
         }
       }
     }
@@ -44,7 +45,7 @@ module.exports = {
         password: { type: "string", select: false, required: true, bcrypt: true, hidden: true }
       },
       options: {
-        timestamp: true
+        timestamps: true
       }
     }
   }
