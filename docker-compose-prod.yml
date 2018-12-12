@@ -10,7 +10,7 @@ services:
       - MONGO_DATABASE=test
       - NODE_ENV=prod
     labels:
-      - traefik.backend=ee
+      - traefik.backend=ecomerce
       - traefik.frontend.rule=Host:ee.yuyuko.me
       - traefik.docker.network=proxy
       - traefik.port=8082
