@@ -1,6 +1,5 @@
 const _ = require("lodash");
 const { MongooseUtils } = require("koma/plugins/mongoose");
-const { findById, pagination, updateById, done } = MongooseUtils;
 
 module.exports = {
   methods: {},

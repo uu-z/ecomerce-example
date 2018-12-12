@@ -13,7 +13,6 @@ koma.$use({
       modules: ["modules"].map(i => path.join(__dirname, i))
     },
     config: {
-      PORT: 8001,
       RUN: true
     }
   }
