@@ -2,7 +2,8 @@ version: "2"
 services:
   server:
     build: .
-    # restart: always
+    # image: koishii/ecomerce-example
+    restart: always
     environment:
       - HOST=localhost
       - PORT=8082
