@@ -1,13 +1,9 @@
+FROM node:alpine as build
+WORKDIR /app
+COPY package.json ./
+RUN yarn install --prod
 FROM node:alpine
-
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-
-RUN npm install
-
+COPY --from=build /app /
 COPY . .
-
 EXPOSE 8082
-
 CMD ["npm", "start"]
