@@ -1527,10 +1527,10 @@ koa@^2.2.0:
     type-is "^1.6.16"
     vary "^1.1.2"
 
-koma@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.npmjs.org/koma/-/koma-0.2.0.tgz#31ac6407fb606375024817d2fe47c9bcc7ddf222"
-  integrity sha512-fFcI3u+OX8UUc2uYiVyrOUHXvGik+K+Wk/bhcrti7T4Ak/1KOHs9D13YT9zSNF69zfBh7lWcbctSoILkiijeVg==
+koma@^0.2.2-rc1:
+  version "0.2.2-rc1"
+  resolved "https://registry.npmjs.org/koma/-/koma-0.2.2-rc1.tgz#5c0f81c01dd011a7bc2d4e8c16379b53d36470e8"
+  integrity sha512-wy0jPVKC7lw14CByJtma6QMH9QGK+yvx97fZftsRQ511eUIP9/6J/JTA0VBZjepd6JbhgW+tMpBcd+HLEcX44Q==
   dependencies:
     "@koa/cors" "^2.2.2"
     api-query-params "^4.8.1"

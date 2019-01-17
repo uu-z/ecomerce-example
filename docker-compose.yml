@@ -3,32 +3,26 @@ services:
   server:
     build: .
     # image: koishii/ecomerce-example
-    restart: always
     environment:
       - HOST=localhost
       - PORT=8082
-      - MONGO_URL=mongo:27017
-      - MONGO_DATABASE=test
+      - MONGO_URL=user:password@mongo:27017/test?authSource=admin
       - NODE_ENV=prod
-    networks:
-      - proxy
+    depends_on:
+      - mongo
     ports:
       - 8082:8082
   mongo:
-    image: mongo
+    image: mongo 
     environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=password
       - MONGO_INITDB_DATABASE=test
     ports:
       - "27017:27017"
-    networks:
-      - proxy
     volumes:
-      - "mongo-data:/data/db"
-    restart: always
-volumes:
-  mongo-data:
+      - "mongo-data2:/data/db"
 
-networks:
-  proxy:
-    driver: overlay
-    attachable: true
+
+volumes:
+  mongo-data2:
