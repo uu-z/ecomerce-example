@@ -9,8 +9,8 @@ module.exports = {
       schema: {
         category: { type: "string", required: true },
         name: { type: "string", required: true, unique: true },
-        code: { type: "string", required: true, unique: true },
-        // type: { type: "string" },
+        code: { type: "string" },
+        spec: { type: "string" },
         createdAt: { type: "date", index: true }
       },
       options: {

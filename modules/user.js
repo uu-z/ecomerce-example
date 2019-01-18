@@ -10,7 +10,10 @@ module.exports = {
         username: { type: "string" },
         usertype: { type: "string", enum: ["Customer", "Provider"], require: true },
         gender: { type: "string" },
-        address: { type: "string" }
+        address: { type: "string" },
+        phone: { type: "string" },
+        mobilePhone: {type: "string"}
+
       },
       options: {
         timestamps: true

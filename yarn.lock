@@ -1527,10 +1527,10 @@ koa@^2.2.0:
     type-is "^1.6.16"
     vary "^1.1.2"
 
-koma@^0.2.2-rc1:
-  version "0.2.2-rc1"
-  resolved "https://registry.npmjs.org/koma/-/koma-0.2.2-rc1.tgz#5c0f81c01dd011a7bc2d4e8c16379b53d36470e8"
-  integrity sha512-wy0jPVKC7lw14CByJtma6QMH9QGK+yvx97fZftsRQ511eUIP9/6J/JTA0VBZjepd6JbhgW+tMpBcd+HLEcX44Q==
+koma@^0.2.3-rc1:
+  version "0.2.3-rc1"
+  resolved "https://registry.npmjs.org/koma/-/koma-0.2.3-rc1.tgz#fc29c8c89589210c495c2ffd66f150acd1de3b03"
+  integrity sha512-gpWtw1P6CIEdytqPYKYDhbPrFtQK8726YMWeyqeCY0G95lM3j9JDLA8UjHPlNso9T+jtWeJK/oMIw+PRKyQ4Qw==
   dependencies:
     "@koa/cors" "^2.2.2"
     api-query-params "^4.8.1"
@@ -1564,7 +1564,7 @@ koma@^0.2.2-rc1:
     koa-static "^5.0.0"
     kue "^0.11.6"
     lodash "^4.17.11"
-    menhera "^0.9.5"
+    menhera "^0.9.6"
     mongoose "^5.3.13"
     mongoose-autopopulate "^0.9.0"
     mongoose-bcrypt "^1.6.0"
@@ -1732,7 +1732,7 @@ memory-pager@^1.0.2:
   resolved "https://registry.npmjs.org/memory-pager/-/memory-pager-1.1.0.tgz#9308915e0e972849fefbae6f8bc95d6b350e7344"
   integrity sha512-Mf9OHV/Y7h6YWDxTzX/b4ZZ4oh9NSXblQL8dtPCOomOtZciEHxePR78+uHFLLlsk01A6jVHhHsQZZ/WcIPpnzg==
 
-menhera@^0.9.5:
+menhera@^0.9.6:
   version "0.9.6"
   resolved "https://registry.npmjs.org/menhera/-/menhera-0.9.6.tgz#b484668413f42017d9853757bf4aa06fbe0a2b36"
   integrity sha512-DSsUbc+2jNOzfeHJe68R2N0hDQ4Lv7vH1iLwH2qHTy//vNXj2tvde0xA+FGYd/znGary0ZopJP1w7gfxO6y9QA==
